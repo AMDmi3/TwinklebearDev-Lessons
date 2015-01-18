@@ -18,8 +18,10 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
 	endif()
 endif()
 
-find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIR})
+set(SDL2PP_WITH_IMAGE ON)
+set(SDL2PP_WITH_TTF ON)
+add_subdirectory(extlibs/SDL2pp)
+include_directories(${SDL2PP_INCLUDE_DIRS})
 include_directories(include)
 
 add_subdirectory(Lesson0)
