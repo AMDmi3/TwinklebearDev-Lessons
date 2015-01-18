@@ -1,6 +1,6 @@
 #include <string>
 #include <iostream>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "res_path.h"
 #include "cleanup.h"
 

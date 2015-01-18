@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 /*
  * Get the resource path for resources located in res/subDir

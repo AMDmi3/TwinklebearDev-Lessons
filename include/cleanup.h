@@ -2,7 +2,7 @@
 #define CLEANUP_H
 
 #include <utility>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 /*
  * Recurse through the list of arguments to clean up, cleaning up
