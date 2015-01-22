@@ -5,6 +5,10 @@ converted to [SDL2pp](https://github.com/AMDmi3/libSDL2pp), C++11 wrapper for SD
 this repository is merely to show how modern C++ makes error handling and resource management safer
 and easier.
 
+See the difference:
+
+https://github.com/AMDmi3/TwinklebearDev-Lessons/compare/Twinklebear:master...sdl2pp
+
 Lesson Index:
 -
 - **Lesson 0: Setting up SDL:** 
