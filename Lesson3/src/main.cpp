@@ -42,50 +42,48 @@ void renderTexture(SDL2pp::Texture &tex, SDL2pp::Renderer &ren, int x, int y){
 	renderTexture(tex, ren, x, y, w, h);
 }
 
-int main(int, char**){
-	try {
-		//Start up SDL and make sure it went ok
-		SDL2pp::SDL sdl(SDL_INIT_VIDEO);
-		SDL2pp::SDLImage sdlimage;
+int main(int, char**) try {
+	//Start up SDL and make sure it went ok
+	SDL2pp::SDL sdl(SDL_INIT_VIDEO);
+	SDL2pp::SDLImage sdlimage;
 
-		//Setup our window and renderer
-		SDL2pp::Window window("Lesson 3", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	//Setup our window and renderer
+	SDL2pp::Window window("Lesson 3", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-		//The textures we'll be using
-		const std::string resPath = getResourcePath("Lesson3");
-		SDL2pp::Texture background(renderer, resPath + "background.png");
-		SDL2pp::Texture image(renderer, resPath + "image.png");
+	//The textures we'll be using
+	const std::string resPath = getResourcePath("Lesson3");
+	SDL2pp::Texture background(renderer, resPath + "background.png");
+	SDL2pp::Texture image(renderer, resPath + "image.png");
 
-		//Clear the window
-		renderer.Clear();
+	//Clear the window
+	renderer.Clear();
 
-		//Determine how many tiles we'll need to fill the screen
-		int xTiles = SCREEN_WIDTH / TILE_SIZE;
-		int yTiles = SCREEN_HEIGHT / TILE_SIZE;
+	//Determine how many tiles we'll need to fill the screen
+	int xTiles = SCREEN_WIDTH / TILE_SIZE;
+	int yTiles = SCREEN_HEIGHT / TILE_SIZE;
 
-		//Draw the tiles by calculating their positions
-		for (int i = 0; i < xTiles * yTiles; ++i){
-			int x = i % xTiles;
-			int y = i / xTiles;
-			renderTexture(background, renderer, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		}
-
-		//Draw our image in the center of the window
-		//We need the foreground image's width to properly compute the position
-		//of it's top left corner so that the image will be centered
-		int iW = image.GetWidth(), iH = image.GetHeight();
-		int x = SCREEN_WIDTH / 2 - iW / 2;
-		int y = SCREEN_HEIGHT / 2 - iH / 2;
-		renderTexture(image, renderer, x, y);
-
-		//Update the screen
-		renderer.Present();
-		SDL_Delay(2000);
-	} catch (SDL2pp::Exception& e) {
-		std::cerr << e.GetSDLFunction() << " Error: " << e.GetSDLError() << std::endl;
-		return 1;
+	//Draw the tiles by calculating their positions
+	for (int i = 0; i < xTiles * yTiles; ++i){
+		int x = i % xTiles;
+		int y = i / xTiles;
+		renderTexture(background, renderer, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 	}
 
+	//Draw our image in the center of the window
+	//We need the foreground image's width to properly compute the position
+	//of it's top left corner so that the image will be centered
+	int iW = image.GetWidth(), iH = image.GetHeight();
+	int x = SCREEN_WIDTH / 2 - iW / 2;
+	int y = SCREEN_HEIGHT / 2 - iH / 2;
+	renderTexture(image, renderer, x, y);
+
+	//Update the screen
+	renderer.Present();
+	SDL_Delay(2000);
+
 	return 0;
+} catch (SDL2pp::Exception& e) {
+	std::cout << e.GetSDLFunction() << " Error: " << e.GetSDLError() << std::endl;
+	return 1;
 }

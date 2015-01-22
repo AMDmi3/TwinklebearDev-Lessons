@@ -40,59 +40,57 @@ void renderTexture(SDL2pp::Texture &tex, SDL2pp::Renderer &ren, int x, int y){
 	renderTexture(tex, ren, x, y, w, h);
 }
 
-int main(int, char**){
-	try {
-		//Start up SDL and make sure it went ok
-		SDL2pp::SDL sdl(SDL_INIT_VIDEO);
-		SDL2pp::SDLImage sdlimage;
+int main(int, char**) try {
+	//Start up SDL and make sure it went ok
+	SDL2pp::SDL sdl(SDL_INIT_VIDEO);
+	SDL2pp::SDLImage sdlimage;
 
-		//Setup our window and renderer, this time let's put our window in the center
-		//of the screen
-		SDL2pp::Window window("Lesson 4", SDL_WINDOWPOS_CENTERED,
-				SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	//Setup our window and renderer, this time let's put our window in the center
+	//of the screen
+	SDL2pp::Window window("Lesson 4", SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-		//The texture we'll be using
-		const std::string resPath = getResourcePath("Lesson4");
-		SDL2pp::Texture image(renderer, resPath + "image.png");
+	//The texture we'll be using
+	const std::string resPath = getResourcePath("Lesson4");
+	SDL2pp::Texture image(renderer, resPath + "image.png");
 
-		//Our texture size won't change, so we can get it here
-		//instead of constantly allocating/deleting ints in the loop
-		int iW = image.GetWidth(), iH = image.GetHeight();
-		int x = SCREEN_WIDTH / 2 - iW / 2;
-		int y = SCREEN_HEIGHT / 2 - iH / 2;
+	//Our texture size won't change, so we can get it here
+	//instead of constantly allocating/deleting ints in the loop
+	int iW = image.GetWidth(), iH = image.GetHeight();
+	int x = SCREEN_WIDTH / 2 - iW / 2;
+	int y = SCREEN_HEIGHT / 2 - iH / 2;
 
-		//Our event structure
-		SDL_Event e;
-		//For tracking if we want to quit
-		bool quit = false;
-		while (!quit){
-			//Read any events that occured, for now we'll just quit if any event occurs
-			while (SDL_PollEvent(&e)){
-				//If user closes the window
-				if (e.type == SDL_QUIT){
-					quit = true;
-				}
-				//If user presses any key
-				if (e.type == SDL_KEYDOWN){
-					quit = true;
-				}
-				//If user clicks the mouse
-				if (e.type == SDL_MOUSEBUTTONDOWN){
-					quit = true;
-				}
+	//Our event structure
+	SDL_Event e;
+	//For tracking if we want to quit
+	bool quit = false;
+	while (!quit){
+		//Read any events that occured, for now we'll just quit if any event occurs
+		while (SDL_PollEvent(&e)){
+			//If user closes the window
+			if (e.type == SDL_QUIT){
+				quit = true;
 			}
-			//Rendering
-			renderer.Clear();
-			//Draw the image
-			renderTexture(image, renderer, x, y);
-			//Update the screen
-			renderer.Present();
+			//If user presses any key
+			if (e.type == SDL_KEYDOWN){
+				quit = true;
+			}
+			//If user clicks the mouse
+			if (e.type == SDL_MOUSEBUTTONDOWN){
+				quit = true;
+			}
 		}
-	} catch (SDL2pp::Exception& e) {
-		std::cerr << e.GetSDLFunction() << " Error: " << e.GetSDLError() << std::endl;
-		return 1;
+		//Rendering
+		renderer.Clear();
+		//Draw the image
+		renderTexture(image, renderer, x, y);
+		//Update the screen
+		renderer.Present();
 	}
 
 	return 0;
+} catch (SDL2pp::Exception& e) {
+	std::cout << e.GetSDLFunction() << " Error: " << e.GetSDLError() << std::endl;
+	return 1;
 }

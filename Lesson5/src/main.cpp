@@ -50,80 +50,78 @@ void renderTexture(SDL2pp::Texture &tex, SDL2pp::Renderer &ren, int x, int y, SD
 	renderTexture(tex, ren, dst, clip);
 }
 
-int main(int, char**){
-	try {
-		//Start up SDL and make sure it went ok
-		SDL2pp::SDL sdl(SDL_INIT_VIDEO);
-		SDL2pp::SDLImage sdlimage;
+int main(int, char**) try {
+	//Start up SDL and make sure it went ok
+	SDL2pp::SDL sdl(SDL_INIT_VIDEO);
+	SDL2pp::SDLImage sdlimage;
 
-		//Setup our window and renderer
-		SDL2pp::Window window("Lesson 5", SDL_WINDOWPOS_CENTERED,
-				SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-		const std::string resPath = getResourcePath("Lesson5");
-		SDL2pp::Texture image(renderer, resPath + "image.png");
+	//Setup our window and renderer
+	SDL2pp::Window window("Lesson 5", SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	const std::string resPath = getResourcePath("Lesson5");
+	SDL2pp::Texture image(renderer, resPath + "image.png");
 
-		//iW and iH are the clip width and height
-		//We'll be drawing only clips so get a center position for the w/h of a clip
-		int iW = 100, iH = 100;
-		int x = SCREEN_WIDTH / 2 - iW / 2;
-		int y = SCREEN_HEIGHT / 2 - iH / 2;
+	//iW and iH are the clip width and height
+	//We'll be drawing only clips so get a center position for the w/h of a clip
+	int iW = 100, iH = 100;
+	int x = SCREEN_WIDTH / 2 - iW / 2;
+	int y = SCREEN_HEIGHT / 2 - iH / 2;
 
-		//Setup the clips for our image
-		SDL2pp::Rect clips[4];
-		//Since our clips our uniform in size we can generate a list of their
-		//positions using some math (the specifics of this are covered in the lesson)
-		for (int i = 0; i < 4; ++i){
-			clips[i].x = i / 2 * iW;
-			clips[i].y = i % 2 * iH;
-			clips[i].w = iW;
-			clips[i].h = iH;
-		}
-		//Specify a default clip to start with
-		int useClip = 0;
+	//Setup the clips for our image
+	SDL2pp::Rect clips[4];
+	//Since our clips our uniform in size we can generate a list of their
+	//positions using some math (the specifics of this are covered in the lesson)
+	for (int i = 0; i < 4; ++i){
+		clips[i].x = i / 2 * iW;
+		clips[i].y = i % 2 * iH;
+		clips[i].w = iW;
+		clips[i].h = iH;
+	}
+	//Specify a default clip to start with
+	int useClip = 0;
 
-		SDL_Event e;
-		bool quit = false;
-		while (!quit){
-			//Event Polling
-			while (SDL_PollEvent(&e)){
-				if (e.type == SDL_QUIT){
-					quit = true;
-				}
-				//Use number input to select which clip should be drawn
-				if (e.type == SDL_KEYDOWN){
-					switch (e.key.keysym.sym){
-						case SDLK_1:
-							useClip = 0;
-							break;
-						case SDLK_2:
-							useClip = 1;
-							break;
-						case SDLK_3:
-							useClip = 2;
-							break;
-						case SDLK_4:
-							useClip = 3;
-							break;
-						case SDLK_ESCAPE:
-							quit = true;
-							break;
-						default:
-							break;
-					}
+	SDL_Event e;
+	bool quit = false;
+	while (!quit){
+		//Event Polling
+		while (SDL_PollEvent(&e)){
+			if (e.type == SDL_QUIT){
+				quit = true;
+			}
+			//Use number input to select which clip should be drawn
+			if (e.type == SDL_KEYDOWN){
+				switch (e.key.keysym.sym){
+					case SDLK_1:
+						useClip = 0;
+						break;
+					case SDLK_2:
+						useClip = 1;
+						break;
+					case SDLK_3:
+						useClip = 2;
+						break;
+					case SDLK_4:
+						useClip = 3;
+						break;
+					case SDLK_ESCAPE:
+						quit = true;
+						break;
+					default:
+						break;
 				}
 			}
-			//Rendering
-			renderer.Clear();
-			//Draw the image
-			renderTexture(image, renderer, x, y, clips[useClip]);
-			//Update the screen
-			renderer.Present();
 		}
-	} catch (SDL2pp::Exception& e) {
-		std::cerr << e.GetSDLFunction() << " Error: " << e.GetSDLError() << std::endl;
-		return 1;
+		//Rendering
+		renderer.Clear();
+		//Draw the image
+		renderTexture(image, renderer, x, y, clips[useClip]);
+		//Update the screen
+		renderer.Present();
 	}
 
 	return 0;
+} catch (SDL2pp::Exception& e) {
+	std::cout << e.GetSDLFunction() << " Error: " << e.GetSDLError() << std::endl;
+	return 1;
 }

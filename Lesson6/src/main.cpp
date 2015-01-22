@@ -69,52 +69,49 @@ SDL2pp::Texture renderText(const std::string &message, const std::string &fontFi
 	return texture;
 }
 
-int main(int, char**){
-	try {
-		//Start up SDL and make sure it went ok
-		SDL2pp::SDL sdl(SDL_INIT_VIDEO);
-		//Also need to init SDL_ttf
-		SDL2pp::SDLTTF sdlttf;
+int main(int, char**) try {
+	//Start up SDL and make sure it went ok
+	SDL2pp::SDL sdl(SDL_INIT_VIDEO);
+	//Also need to init SDL_ttf
+	SDL2pp::SDLTTF sdlttf;
 
-		//Setup our window and renderer
-		SDL2pp::Window window("Lesson 6", SDL_WINDOWPOS_CENTERED,
-				SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	//Setup our window and renderer
+	SDL2pp::Window window("Lesson 6", SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-		const std::string resPath = getResourcePath("Lesson6");
-		//We'll render the string "TTF fonts are cool!" in white
-		//Color is in RGB format
-		SDL_Color color = { 255, 255, 255, 255 };
-		SDL2pp::Texture image = renderText("TTF fonts are cool!", resPath + "sample.ttf", color, 64, renderer);
+	const std::string resPath = getResourcePath("Lesson6");
+	//We'll render the string "TTF fonts are cool!" in white
+	//Color is in RGB format
+	SDL_Color color = { 255, 255, 255, 255 };
+	SDL2pp::Texture image = renderText("TTF fonts are cool!", resPath + "sample.ttf", color, 64, renderer);
 
-		//Get the texture w/h so we can center it in the screen
-		int iW = image.GetWidth(), iH = image.GetHeight();
-		int x = SCREEN_WIDTH / 2 - iW / 2;
-		int y = SCREEN_HEIGHT / 2 - iH / 2;
+	//Get the texture w/h so we can center it in the screen
+	int iW = image.GetWidth(), iH = image.GetHeight();
+	int x = SCREEN_WIDTH / 2 - iW / 2;
+	int y = SCREEN_HEIGHT / 2 - iH / 2;
 
-		SDL_Event e;
-		bool quit = false;
-		while (!quit){
-			//Event Polling
-			while (SDL_PollEvent(&e)){
-				if (e.type == SDL_QUIT){
-					quit = true;
-				}
-				if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE){
-					quit = true;
-				}
+	SDL_Event e;
+	bool quit = false;
+	while (!quit){
+		//Event Polling
+		while (SDL_PollEvent(&e)){
+			if (e.type == SDL_QUIT){
+				quit = true;
 			}
-			renderer.Clear();
-			//We can draw our message as we do any other texture, since it's been
-			//rendered to a texture
-			renderTexture(image, renderer, x, y);
-			renderer.Present();
+			if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE){
+				quit = true;
+			}
 		}
-	} catch (SDL2pp::Exception& e) {
-		std::cerr << e.GetSDLFunction() << " Error: " << e.GetSDLError() << std::endl;
-		return 1;
+		renderer.Clear();
+		//We can draw our message as we do any other texture, since it's been
+		//rendered to a texture
+		renderTexture(image, renderer, x, y);
+		renderer.Present();
 	}
 
 	return 0;
+} catch (SDL2pp::Exception& e) {
+	std::cout << e.GetSDLFunction() << " Error: " << e.GetSDLError() << std::endl;
+	return 1;
 }
-
